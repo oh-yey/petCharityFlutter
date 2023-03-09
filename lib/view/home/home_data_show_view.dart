@@ -24,7 +24,7 @@ class HomeDataShowView extends StatelessWidget {
                 _left('众筹宝贝', statisticsResult?.data?.donateCount ?? 0, 'assets/home/helpPet.svg', onTap: () {
                   //gotoPetHelpList(context)
                 }),
-                _left('注册用户数', statisticsResult?.data?.count ?? 0, 'assets/home/smilingFace.svg'),
+                _left('注册用户数', statisticsResult?.data?.userCount ?? 0, 'assets/home/smilingFace.svg'),
               ],
             ),
           ),
@@ -81,7 +81,7 @@ class HomeDataShowView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('${statisticsResult?.data?.amount ?? 0}', style: TextStyle(fontSize: 48.sp)),
+                    Text('${statisticsResult?.data?.donateAmount ?? 0}', style: TextStyle(fontSize: 48.sp)),
                     SizedBox(height: 12.h),
                     Text('众筹金额\n爱心捐粮和公益费用累计', style: TextStyle(fontSize: 42.sp)),
                   ],

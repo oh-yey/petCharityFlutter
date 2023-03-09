@@ -1,34 +1,34 @@
 import 'package:pet_charity/models/model.dart';
 
 class Statistics extends Model {
-  Statistics({num? count, num? donateCount, num? amount}) {
-    _count = count;
+  Statistics({num? userCount, num? donateCount, num? donateAmount}) {
+    _userCount = userCount;
     _donateCount = donateCount;
-    _amount = amount;
+    _donateAmount = donateAmount;
   }
 
   Statistics.fromJson(dynamic json) {
-    _count = json['count'];
+    _userCount = json['userCount'];
     _donateCount = json['donateCount'];
-    _amount = json['amount'];
+    _donateAmount = json['donateAmount'];
   }
 
-  num? _count;
+  num? _userCount;
   num? _donateCount;
-  num? _amount;
+  num? _donateAmount;
 
-  num? get count => _count;
+  num? get userCount => _userCount;
 
   num? get donateCount => _donateCount;
 
-  num? get amount => _amount;
+  num? get donateAmount => _donateAmount;
 
   @override
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
-    map['count'] = _count;
+    map['userCount'] = _userCount;
     map['donateCount'] = _donateCount;
-    map['amount'] = _amount;
+    map['donateAmount'] = _donateAmount;
     return map;
   }
 }
