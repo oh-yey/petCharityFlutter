@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:fluro/fluro.dart';
 import 'package:provider/provider.dart';
@@ -22,12 +25,11 @@ void main() async {
   Global.init().then((value) => runApp(const MyApp()));
   Application.router = FluroRouter();
   Routes.configureRoutes(Application.router);
-  // if (Platform.isAndroid) {
-  // 透明状态栏
-  // SystemUiOverlayStyle systemUiOverlayStyle =
-  //     const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
-  // SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
-  // }
+  if (Platform.isAndroid) {
+    // 透明状态栏
+    SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(statusBarColor: Colors.transparent);
+    SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
+  }
 }
 
 class MyApp extends StatelessWidget {

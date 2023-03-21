@@ -102,3 +102,9 @@ Future<bool> upload(String path) async {
     return false;
   }
 }
+
+/// 反馈
+Future<bool> feedback({required String nickname, required String title, required String content, required int score}) async {
+  Response response = await DioClient().doPost('/user/feedback', data: {"nickname": nickname, "title": title, "content": content, "score": score});
+  return response.statusCode == 201;
+}

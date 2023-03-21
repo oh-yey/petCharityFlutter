@@ -144,7 +144,7 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
       scheme: 'tel',
       path: user?.contact?.phone ?? '',
     );
-    if (await launchUrl(uri)) {
+    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
       debugPrint('launchUrl 错误');
@@ -156,7 +156,7 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
       scheme: 'mailto',
       path: user?.contact?.mail ?? '',
     );
-    if (await launchUrl(uri)) {
+    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
       debugPrint('launchUrl 错误');
@@ -164,11 +164,8 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
   }
 
   void _onTapQQ() async {
-    final Uri uri = Uri(
-      scheme: 'mqq',
-      path: user?.contact?.qq ?? '',
-    );
-    if (await launchUrl(uri)) {
+    final Uri uri = Uri(scheme: 'mqq', path: 'im/chat?chat_type=wpa&uin=${user?.contact?.qq ?? ''}');
+    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
       debugPrint('launchUrl 错误');
@@ -176,11 +173,8 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
   }
 
   void _onTapWechat() async {
-    final Uri uri = Uri(
-      scheme: 'sinavdisk',
-      path: user?.contact?.wechat ?? '',
-    );
-    if (await launchUrl(uri)) {
+    final Uri uri = Uri(scheme: 'weixin', path: 'dl/addfriend');
+    if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
       debugPrint('launchUrl 错误');

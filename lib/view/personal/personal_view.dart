@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:bot_toast/bot_toast.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -23,6 +24,7 @@ import 'package:pet_charity/view/adopt/my_adopt_list_page.dart';
 import 'package:pet_charity/view/personal/personal_pet_view.dart';
 import 'package:pet_charity/view/personal/personal_center_page.dart';
 import 'package:pet_charity/view/pet/pet_list_page.dart';
+import 'package:pet_charity/view/personal/feedback_view.dart';
 import 'package:pet_charity/view/utils/svg_picture_color.dart';
 import 'package:pet_charity/view/utils/extension/extension_state.dart';
 import 'package:pet_charity/view/view/my_shader_mask.dart';
@@ -77,11 +79,11 @@ class _PersonalViewState extends State<PersonalView> {
         _buildTop(),
         _buildPersonal(),
         PersonalPetView(_petList, _gotoPetList),
-        _buildBottomInkWell("assets/personal/联系.svg", "联系我们", () {}),
-        _buildBottomInkWell("assets/personal/分享.svg", "分享给好友", () {}),
-        _buildBottomInkWell("assets/personal/意见.svg", "意见反馈", () {}),
-        _buildBottomInkWell("assets/personal/协议.svg", "用户协议", () {}),
-        _buildBottomInkWell("assets/personal/关于.svg", "关于我们", () {}),
+        _buildBottomInkWell("assets/personal/联系.svg", "联系我们", _concerning),
+        _buildBottomInkWell("assets/personal/分享.svg", "分享给好友", _concerning),
+        _buildBottomInkWell("assets/personal/意见.svg", "意见反馈", () => gotoFeedbackView(context)),
+        _buildBottomInkWell("assets/personal/协议.svg", "用户协议", () => BotToast.showText(text: "暂无")),
+        _buildBottomInkWell("assets/personal/关于.svg", "关于开发者", _concerning),
       ],
     );
   }
@@ -210,7 +212,7 @@ class _PersonalViewState extends State<PersonalView> {
                 _buildButton("粉丝", '${user?.followersCount ?? 0}', () {}),
                 _buildButton("关注", '${user?.followingCount ?? 0}', () {}),
                 _buildButton("收藏", '${user?.collectCount ?? 0}', () {}),
-                _buildButton("发布", "0", _gotoMyAdoptList),
+                _buildButton("发布", '${user?.adoptCount ?? 0}', _gotoMyAdoptList),
               ],
             ),
           ),
@@ -251,6 +253,7 @@ class _PersonalViewState extends State<PersonalView> {
 
   void _onTapHead() async {
     final ImagePicker picker = ImagePicker();
+    final color = Theme.of(context).colorScheme.primaryContainer;
     int? selected = await myPhotoSelectSheet(context);
     XFile? photo;
     if (selected == 0) {
@@ -267,8 +270,7 @@ class _PersonalViewState extends State<PersonalView> {
         uiSettings: [
           AndroidUiSettings(
             toolbarTitle: '截取用户 头像图片',
-            toolbarColor: Colors.orangeAccent,
-            toolbarWidgetColor: Colors.blueAccent,
+            toolbarColor: color,
             initAspectRatio: CropAspectRatioPreset.square,
             lockAspectRatio: true,
           ),
@@ -293,6 +295,18 @@ class _PersonalViewState extends State<PersonalView> {
           BotToast.showText(text: '修改失败 请稍后再试');
         }
       }
+    }
+  }
+
+  void _concerning() async {
+    final Uri uri = Uri(
+      scheme: 'https',
+      path: 'github.com/miyou-dev',
+    );
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
+    } else {
+      debugPrint('launchUrl 错误');
     }
   }
 

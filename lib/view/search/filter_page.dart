@@ -147,7 +147,7 @@ class _FilterButton extends StatelessWidget {
         borderRadius: const BorderRadius.all(Radius.circular(12)),
         onTap: onTap,
         child: Ink(
-          width: 390.w,
+          width: 380.w,
           padding: EdgeInsets.symmetric(vertical: 32.h, horizontal: 12.w),
           child: Text(
             filterItem.name,

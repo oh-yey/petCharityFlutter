@@ -65,6 +65,9 @@ class PersonalPetView extends StatelessWidget {
   }
 
   Pet? get firstPet {
-    return petList?.results?.first;
+    if (petList?.results?.isNotEmpty ?? false) {
+      return petList?.results?.first;
+    }
+    return null;
   }
 }

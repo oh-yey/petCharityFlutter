@@ -12,6 +12,7 @@ class Routes {
   static String personalCenter = '/personalCenter'; // 个人信息修改
   static String personalContact = '/personalContact'; // 个人联系方式修改
   static String personalAuthentication = '/personalAuthentication'; // 实名认证
+  static String feedback = '/feedback'; // 用户反馈
 
   static String search = '/search'; // 搜索
   static String filter = '/filter'; // 筛选
@@ -53,6 +54,7 @@ class Routes {
     router.define(personalCenter, handler: personalCenterHandler);
     router.define(personalContact, handler: personalContactHandler);
     router.define(personalAuthentication, handler: personalAuthenticationHandler);
+    router.define(feedback, handler: feedbackHandler);
 
     router.define(search, handler: searchHandler);
     router.define(filter, handler: filterHandler);

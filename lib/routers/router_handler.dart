@@ -24,6 +24,7 @@ import 'package:pet_charity/view/donate/donate_help_donation_play_page.dart';
 import 'package:pet_charity/view/main_page.dart';
 import 'package:pet_charity/view/login/login_page.dart';
 import 'package:pet_charity/view/login/verification_code_page.dart';
+import 'package:pet_charity/view/personal/feedback_view.dart';
 import 'package:pet_charity/view/personal/personal_authentication_page.dart';
 import 'package:pet_charity/view/personal/personal_center_page.dart';
 import 'package:pet_charity/view/personal/personal_contact_view.dart';
@@ -49,6 +50,8 @@ Handler personalCenterHandler = Handler(handlerFunc: (context, parameters) => co
 Handler personalContactHandler = Handler(handlerFunc: (context, parameters) => const PersonalContactView());
 // 实名认证
 Handler personalAuthenticationHandler = Handler(handlerFunc: (context, parameters) => const PersonalAuthenticationPage());
+// 用户反馈
+Handler feedbackHandler = Handler(handlerFunc: (context, parameters) => const FeedbackView());
 
 // 搜索
 Handler searchHandler = Handler(handlerFunc: (c, p) => const SearchPage());

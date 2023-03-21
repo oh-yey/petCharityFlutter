@@ -11,6 +11,7 @@ class User extends Model {
   num? _followersCount;
   num? _commentLikeCount;
   num? _collectCount;
+  num? _adoptCount;
   String? _token;
   String? _nickname;
   String? _phone;
@@ -40,6 +41,8 @@ class User extends Model {
   num? get commentLikeCount => _commentLikeCount;
 
   num? get collectCount => _collectCount;
+
+  num? get adoptCount => _adoptCount;
 
   String? get token => _token;
 
@@ -76,6 +79,7 @@ class User extends Model {
     num? followersCount,
     num? commentLikeCount,
     num? collectCount,
+    num? adoptCount,
     String? token,
     String? nickname,
     String? phone,
@@ -98,6 +102,7 @@ class User extends Model {
     _followersCount = followersCount;
     _commentLikeCount = commentLikeCount;
     _collectCount = collectCount;
+    _adoptCount = adoptCount;
     _token = token;
     _nickname = nickname;
     _phone = phone;
@@ -122,6 +127,7 @@ class User extends Model {
     _followersCount = json['followers_count'];
     _commentLikeCount = json['comment_like_count'];
     _collectCount = json['collect_count'];
+    _adoptCount = json['adopt_count'];
     _token = json['token'];
     _nickname = json['nickname'];
     _phone = json['phone'];
@@ -148,6 +154,7 @@ class User extends Model {
     map['followers_count'] = _followersCount;
     map['comment_like_count'] = _commentLikeCount;
     map['collect_count'] = _collectCount;
+    map['adopt_count'] = _adoptCount;
     map['token'] = _token;
     map['nickname'] = _nickname;
     map['phone'] = _phone;
