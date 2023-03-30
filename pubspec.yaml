@@ -39,8 +39,7 @@ dependencies:
   fluro: ^2.0.4
   # 下拉刷新
   easy_refresh: ^3.3.1
-  # 自动调整文本大小
-  auto_size_text: ^3.0.0
+  # 裁剪
   image_cropper: ^3.0.1
 
 dev_dependencies:

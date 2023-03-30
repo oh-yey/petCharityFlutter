@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_charity/models/adopt/pet_adopt.dart';
@@ -51,7 +50,14 @@ class AdoptCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        AutoSizeText(adopt.title ?? '', style: TextStyle(fontSize: 64.sp, fontWeight: FontWeight.w700), maxLines: 1, overflow: TextOverflow.ellipsis),
+        FittedBox(
+          child: Text(
+            adopt.title ?? '',
+            style: TextStyle(fontSize: 64.sp, fontWeight: FontWeight.w700),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
         const Spacer(flex: 1),
         Padding(
           padding: EdgeInsets.only(left: 16.w),

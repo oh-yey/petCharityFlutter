@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:bot_toast/bot_toast.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_charity/states/color_schemes.g.dart';
@@ -167,7 +166,14 @@ class _DonateDetailsPageState extends State<DonateDetailsPage> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              AutoSizeText(widget.donate.name ?? '', style: TextStyle(fontSize: 60.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
+              FittedBox(
+                child: Text(
+                  widget.donate.name ?? '',
+                  style: TextStyle(fontSize: 60.sp),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               SizedBox(height: 12.h),
               Wrap(
                 spacing: 24.w,
@@ -179,7 +185,7 @@ class _DonateDetailsPageState extends State<DonateDetailsPage> {
             ],
           ),
         ),
-        SizedBox(width: 300.w),
+        SizedBox(width: 320.w),
       ],
     );
   }

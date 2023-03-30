@@ -64,11 +64,13 @@ class DonateCard extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(left: 12.w),
-                    child: Text(
-                      donate.name ?? '',
-                      style: TextStyle(fontSize: 44.sp, fontWeight: FontWeight.w600),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+                    child: FittedBox(
+                      child: Text(
+                        donate.name ?? '',
+                        style: TextStyle(fontSize: 44.sp, fontWeight: FontWeight.w600),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ),
                   SizedBox(height: 4.h),
