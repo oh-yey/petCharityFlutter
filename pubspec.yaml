@@ -58,6 +58,7 @@ flutter:
     - assets/public/
     - assets/main/
     - assets/home/
+    - assets/question/
     - assets/personal/
     - assets/pet/
     - assets/donate/

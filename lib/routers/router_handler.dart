@@ -10,6 +10,7 @@ import 'package:pet_charity/models/donate/donate.dart';
 import 'package:pet_charity/models/donate/pet_donate.dart';
 import 'package:pet_charity/models/filter/filter_result.dart';
 import 'package:pet_charity/models/pet/pet.dart';
+import 'package:pet_charity/models/question/question.dart';
 import 'package:pet_charity/models/user/user.dart';
 
 import 'package:pet_charity/view/adopt/adopt_edit_page.dart';
@@ -34,6 +35,9 @@ import 'package:pet_charity/view/pet/pet_edit_page.dart';
 import 'package:pet_charity/view/pet/pet_list_page.dart';
 import 'package:pet_charity/view/pet/select_breed_page.dart';
 import 'package:pet_charity/view/pet/select_weight_page.dart';
+import 'package:pet_charity/view/question/answer_list_page.dart';
+import 'package:pet_charity/view/question/answer_page.dart';
+import 'package:pet_charity/view/question/question_edit_page.dart';
 import 'package:pet_charity/view/search/filter_page.dart';
 import 'package:pet_charity/view/search/search_page.dart';
 
@@ -106,3 +110,17 @@ Handler myPetAdoptListHandler = Handler(handlerFunc: (c, p) => const MyAdoptList
 Handler adoptEditHandler = Handler(handlerFunc: (c, p) => AdoptEditPage(isAdd: false, adopt: PetAdopt.fromJson(jsonDecode(p['adopt']?.first ?? ''))));
 // 宠物领养添加
 Handler adoptAddHandler = Handler(handlerFunc: (c, p) => const AdoptEditPage(isAdd: true));
+
+// --------------------------------------------------问答--------------------------------------------------
+// 答案列表
+Handler answerListHandler = Handler(handlerFunc: (c, p) => AnswerListPage(Question.fromJson(jsonDecode(p['question']?.first ?? ''))));
+Handler answerHandler = Handler(handlerFunc: (c, p) => AnswerPage(Question.fromJson(jsonDecode(p['question']?.first ?? ''))));
+// 编辑问题
+Handler questionEditHandler = Handler(
+  handlerFunc: (c, p) => QuestionEditPage(
+    isAdd: false,
+    question: Question.fromJson(jsonDecode(p['question']?.first ?? '')),
+  ),
+);
+// 添加问题
+Handler questionAddHandler = Handler(handlerFunc: (c, p) => const QuestionEditPage(isAdd: true));

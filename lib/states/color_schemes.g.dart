@@ -78,4 +78,8 @@ class Colours {
   /// 渐变
   static const Color gradient1 = Color(0xFF75FBC9); // 碧蓝
   static const Color gradient2 = Color(0xFFF4FBDB); // 亮金菊黄
+
+  // 问答
+  static const Color questionCard1 = Color(0xFF71F3C6);
+  static const Color questionCard2 = Color(0xFFFCEF66);
 }

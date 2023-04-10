@@ -13,7 +13,6 @@ class MyTitle extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 48.w),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           SizedBox(
             width: 120.w,
@@ -26,7 +25,7 @@ class MyTitle extends StatelessWidget {
               ),
             ),
           ),
-          Text(title, style: TextStyle(fontSize: 68.sp), maxLines: 1, overflow: TextOverflow.ellipsis),
+          Expanded(child: Center(child: Text(title, style: TextStyle(fontSize: 68.sp), maxLines: 1, overflow: TextOverflow.ellipsis))),
           SizedBox(
             width: 120.w,
             child: Material(

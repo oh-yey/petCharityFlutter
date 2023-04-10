@@ -41,6 +41,12 @@ class Routes {
   static String adoptEdit = '/adoptEdit'; // 宠物领养编辑
   static String adoptAdd = '/adoptAdd'; // 宠物领养添加
 
+  // --------------------------------------------------问答--------------------------------------------------
+  static String answerList = '/answerList'; // 答案列表
+  static String answer = '/answer'; // 问答 回答
+  static String questionEdit = '/questionEdit'; // 编辑问题
+  static String questionAdd = '/questionAdd'; // 添加问题
+
   static void configureRoutes(FluroRouter router) {
     router.notFoundHandler = Handler(handlerFunc: (BuildContext? context, Map<String, List<String>> params) {
       debugPrint("没有找到ROUTE!!!");
@@ -79,5 +85,11 @@ class Routes {
     router.define(myPetAdoptList, handler: myPetAdoptListHandler);
     router.define(adoptEdit, handler: adoptEditHandler);
     router.define(adoptAdd, handler: adoptAddHandler);
+
+    router.define(answerList, handler: answerListHandler);
+    router.define(answer, handler: answerHandler);
+    router.define(questionEdit, handler: questionEditHandler);
+    router.define(questionAdd, handler: questionAddHandler);
+
   }
 }

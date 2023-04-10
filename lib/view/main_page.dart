@@ -10,6 +10,7 @@ import 'package:pet_charity/states/user.dart';
 import 'package:pet_charity/models/user/user.dart';
 
 import 'package:pet_charity/view/home/home_page.dart';
+import 'package:pet_charity/view/question/question_and_answer_page.dart';
 import 'package:pet_charity/view/personal/personal_view.dart';
 import 'package:pet_charity/view/utils/extension/extension_state.dart';
 
@@ -21,7 +22,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final List<Widget> _tabBodies = [const HomePage(), const PersonalView()];
+  final List<Widget> _tabBodies = [const HomePage(), const QuestionAndAnswerPage(), const PersonalView()];
 
   int _curIndex = 0;
 
@@ -36,7 +37,7 @@ class _MainPageState extends State<MainPage> {
 
   void _change(int index) async {
     if (index != _curIndex) {
-      if (index == 1) {
+      if (index == 2) {
         User? user = context.read<UserModel>().user;
         if (user == null) {
           var resultCode = await gotoLogin(context);
@@ -62,7 +63,8 @@ class _MainPageState extends State<MainPage> {
           onTap: _change,
           items: [
             myBottomNavigationBarItem('assets/main/home.svg', '首页', 0),
-            myBottomNavigationBarItem('assets/main/my.svg', '我的', 1),
+            myBottomNavigationBarItem('assets/main/问答.svg', '问答', 1),
+            myBottomNavigationBarItem('assets/main/my.svg', '我的', 2),
           ],
         ),
       ),

@@ -20,6 +20,8 @@ import 'package:pet_charity/service/user_server.dart' as user_service;
 import 'package:pet_charity/routers/application.dart';
 import 'package:pet_charity/routers/routes.dart';
 
+import 'package:pet_charity/tools/user_tools.dart';
+
 import 'package:pet_charity/view/adopt/adopt_details_contact_page.dart';
 import 'package:pet_charity/view/pet/pet_cover_image_card.dart';
 import 'package:pet_charity/view/utils/extension/extension_state.dart';
@@ -167,10 +169,11 @@ class _AdoptDetailsPageState extends State<AdoptDetailsPage> {
       padding: EdgeInsets.only(top: 12.h, left: 24.w, right: 24.w),
       child: Row(
         children: [
-          PetBottomButtonWidget('assets/public/收藏.svg', '收藏', onTap: like, color: isCollect ? Colors.red : null),
-          PetBottomButtonWidget('assets/public/分享.svg', '分享', onTap: share),
-          PetBottomButtonWidget('assets/public/留言.svg', '留言', onTap: comments),
-          Expanded(flex: 4, child: _buildBottomButton())
+          PetBottomButtonWidget('assets/public/收藏.svg', '收藏', onTap: like, color: isCollect ? Colors.red : null, flex: 3),
+          PetBottomButtonWidget('assets/public/分享.svg', '分享', onTap: share, flex: 3),
+          const Spacer(flex: 2),
+          // PetBottomButtonWidget('assets/public/留言.svg', '留言', onTap: comments),
+          Expanded(flex: 12, child: _buildBottomButton())
         ],
       ),
     );
@@ -204,6 +207,10 @@ class _AdoptDetailsPageState extends State<AdoptDetailsPage> {
 
   // 收藏
   void like() async {
+    if (!judgeLogin(context)) {
+      BotToast.showText(text: '未登录');
+      return;
+    }
     Detail code = await user_service.collect(2, widget.adopt.id ?? 0, isCollect);
 
     // 提示
@@ -225,13 +232,17 @@ class _AdoptDetailsPageState extends State<AdoptDetailsPage> {
     //
   }
 
-  // 留言
-  void comments() {
-    //
-  }
+  // // 留言
+  // void comments() {
+  //   //
+  // }
 
   // 查看联系方式
   void gotoContact() {
+    if (!judgeLogin(context)) {
+      BotToast.showText(text: '未登录');
+      return;
+    }
     if (widget.adopt.pet?.user != null) {
       User? user = context.read<UserModel>().user;
       if (user?.verified == true) {

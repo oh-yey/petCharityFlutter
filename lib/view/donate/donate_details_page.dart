@@ -336,10 +336,11 @@ class _DonateDetailsPageState extends State<DonateDetailsPage> {
       padding: EdgeInsets.only(top: 12.h, left: 24.w, right: 24.w),
       child: Row(
         children: [
-          PetBottomButtonWidget('assets/public/收藏.svg', '收藏', onTap: like, color: isCollect ? Colors.red : null),
-          PetBottomButtonWidget('assets/public/分享.svg', '分享', onTap: share),
-          PetBottomButtonWidget('assets/public/留言.svg', '留言', onTap: comments),
-          Expanded(flex: 4, child: _buildBottomButton())
+          PetBottomButtonWidget('assets/public/收藏.svg', '收藏', onTap: like, color: isCollect ? Colors.red : null, flex: 3),
+          PetBottomButtonWidget('assets/public/分享.svg', '分享', onTap: share, flex: 3),
+          const Spacer(flex: 2),
+          // PetBottomButtonWidget('assets/public/留言.svg', '留言', onTap: comments),
+          Expanded(flex: 12, child: _buildBottomButton())
         ],
       ),
     );
@@ -373,6 +374,10 @@ class _DonateDetailsPageState extends State<DonateDetailsPage> {
 
   // 收藏
   void like() async {
+    if (!judgeLogin(context)) {
+      BotToast.showText(text: '未登录');
+      return;
+    }
     Detail code = await user_service.collect(1, widget.donate.id ?? 0, isCollect);
 
     // 提示
@@ -394,10 +399,10 @@ class _DonateDetailsPageState extends State<DonateDetailsPage> {
     //
   }
 
-  // 留言
-  void comments() {
-    //
-  }
+  // // 留言
+  // void comments() {
+  //   //
+  // }
 
   // 捐赠
   void help() async {

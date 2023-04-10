@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:pet_charity/models/pet/pet.dart';
 
-import 'package:pet_charity/tools/pet/date.dart';
+import 'package:pet_charity/tools/date.dart';
 
 import 'package:pet_charity/view/view/image/my_image.dart';
 
