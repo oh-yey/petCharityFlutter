@@ -19,7 +19,7 @@ import 'package:pet_charity/routers/application.dart';
 
 import 'package:pet_charity/view/login/input_box_view.dart';
 import 'package:pet_charity/view/utils/dark.dart';
-import 'package:pet_charity/view/utils/extension/extension_state.dart';
+
 import 'package:pet_charity/view/view/my_keyboard_view.dart';
 import 'package:pet_charity/view/utils/svg_picture_color.dart';
 
@@ -33,14 +33,21 @@ class VerificationCodePage extends StatefulWidget {
 }
 
 class _VerificationCodePageState extends State<VerificationCodePage> {
-  String _vCode = '';
+  final ValueNotifier<String> _vCode = ValueNotifier('');
+
+  final ValueNotifier<int> _timeCount = ValueNotifier(0);
+  final ValueNotifier<String> _timeText = ValueNotifier('发送');
 
   Timer? _timer;
-  int _timeCount = 0;
-  String _timeText = '发送';
 
   @override
+  void initState() {
+    super.initState();
+    _sendVCode();
+  }
+  @override
   Widget build(BuildContext context) {
+    debugPrint('_VerificationCodePageState build');
     return Scaffold(
       body: Stack(
         children: [
@@ -62,9 +69,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
       width: 100.w,
       height: 100.h,
       child: InkWell(
-        onTap: () {
-          Application.router.pop(context);
-        },
+        onTap: () => Application.router.pop(context),
         child: Ink(
           child: SvgPicture.asset(
             'assets/public/返回.svg',
@@ -86,7 +91,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
         children: [
           Text("验证码", style: TextStyle(fontWeight: FontWeight.w700, fontSize: 76.sp)),
           SizedBox(height: 12.h),
-          Text("验证码已发送至手机${widget.phone?.substring(0, 3) ?? '*'}****${widget.phone?.substring(7, 11) ?? '*'}",
+          Text("验证码已发送至手机${widget.phone?.substring(0, 3) ?? '***'}****${widget.phone?.substring(7, 11) ?? '****'}",
               style: TextStyle(color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5))),
         ],
       ),
@@ -101,7 +106,10 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
       height: 200.h,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 145.w),
-        child: VCodeInputBoxView(_vCode),
+        child: ValueListenableBuilder<String>(
+          valueListenable: _vCode,
+          builder: (context, value, child) => VCodeInputBoxView(value),
+        ),
       ),
     );
   }
@@ -120,7 +128,13 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
             onTap: _sendVCode,
             child: Ink(
               padding: EdgeInsets.symmetric(horizontal: 12.w),
-              child: Text(_timeText, style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color?.withOpacity(_timeCount == 0 ? 1 : 0.5))),
+              child: ValueListenableBuilder<String>(
+                valueListenable: _timeText,
+                builder: (context, value, child) {
+                  return Text(value,
+                      style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color?.withOpacity('重新获取' == value || value == '发送' ? 1 : 0.5)));
+                },
+              ),
             ),
           ),
           SizedBox(height: 12.h),
@@ -131,20 +145,19 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
   }
 
   void _sendVCode() async {
-    if (_timeCount == 0) {
+    if (_timeCount.value == 0) {
       Detail sendVCodeDetail = await server.sendVerificationCode(widget.phone ?? '');
       if (sendVCodeDetail.code == 200) {
         BotToast.showText(text: '验证码已发送，请注意查收');
-        _timeCount = 60;
+        _timeCount.value = 60;
         _timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
-          _timeCount -= 1;
-          if (_timeCount <= 0) {
-            _timeText = '重新获取';
+          _timeCount.value--;
+          if (_timeCount.value <= 0) {
+            _timeText.value = '重新获取';
             _timer?.cancel();
           } else {
-            _timeText = '重新发送(' '$_timeCount' 's)';
+            _timeText.value = '重新发送(' '${_timeCount.value}' 's)';
           }
-          mySetState(() {});
         });
       } else {
         BotToast.showText(text: '发送验证码失败');
@@ -160,30 +173,31 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
       height: 750.h,
       child: MyKeyboardView(
         callback: (int num) {
+          String value = _vCode.value;
           if (num == 127) {
             // 删除
-            if (_vCode.isNotEmpty) {
-              _vCode = _vCode.substring(0, _vCode.length - 1);
+            if (value.isNotEmpty) {
+              _vCode.value = value.substring(0, value.length - 1);
             }
           } else if (num == 13) {
             //
             _finish();
           } else {
-            if (_vCode.length < 4) {
-              _vCode = '$_vCode$num';
-              if (_vCode.length == 4) {
+            if (value.length < 4) {
+              _vCode.value = '$value$num';
+              if (value.length == 4) {
                 _finish();
               }
             }
           }
-          mySetState(() {});
         },
       ),
     );
   }
 
   void _finish() async {
-    if (_vCode.length != 4) {
+    String value = _vCode.value;
+    if (value.length != 4) {
       BotToast.showText(text: "请输入验证码");
     } else {
       bool flag = false;
@@ -191,7 +205,7 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
       Detail isRegisterDetail = await server.judgeRegister(phone);
       if (isRegisterDetail.whether ?? true) {
         // 注册
-        Detail registerDetail = await server.register(phone, _vCode);
+        Detail registerDetail = await server.register(phone, value);
         if (registerDetail.code == 200) {
           BotToast.showText(text: "注册成功");
           flag = true;
@@ -208,7 +222,8 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
 
       if (flag) {
         // 登录
-        UserResult userLogin = await server.login(phone, code: _vCode);
+        UserResult userLogin = await server.login(phone, code: value);
+        debugPrint('${userLogin.code ?? -1}');
         if (userLogin.code == 200) {
           if (!(isRegisterDetail.whether ?? true)) {
             BotToast.showText(text: "登录成功");
@@ -217,9 +232,9 @@ class _VerificationCodePageState extends State<VerificationCodePage> {
           Provider.of<UserModel>(context, listen: false).user = userLogin.data;
           Application.router.pop(context, 200);
         } else if (userLogin.code == 400) {
-          BotToast.showText(text: "验证码错误");
+          BotToast.showText(text: "请输入正确的验证码");
         } else if (userLogin.code == 204) {
-          BotToast.showText(text: "请发送验证码");
+          BotToast.showText(text: "验证码错误");
         }
       }
     }

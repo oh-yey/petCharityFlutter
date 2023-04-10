@@ -3,15 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:pet_charity/common/config.dart';
-
-import 'package:pet_charity/models/other/statistics_result.dart';
 import 'package:pet_charity/models/adopt/pet_adopt.dart';
 import 'package:pet_charity/models/adopt/pet_adopt_list.dart';
 import 'package:pet_charity/models/donate/pet_donate.dart';
 import 'package:pet_charity/models/donate/pet_donate_list.dart';
 
-import 'package:pet_charity/service/statistics.dart';
 import 'package:pet_charity/service/donate_server.dart';
 import 'package:pet_charity/service/adopt_server.dart';
 
@@ -36,17 +32,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage> {
   // 轮播图 图片
-  final List<String> _adList = [
-    'http://${Config.ip}:${Config.port}/statics/shuffling/img1.jpg',
-    'http://${Config.ip}:${Config.port}/statics/shuffling/img2.jpg',
-    'http://${Config.ip}:${Config.port}/statics/shuffling/img3.jpg',
-    'http://${Config.ip}:${Config.port}/statics/shuffling/img4.jpg',
-  ];
-
-  // 首页展示数据
-  StatisticsResult? _statisticsResult;
 
   // 宠物宠物帮助众筹数据
   bool _shouldShowDonate = false;
@@ -66,15 +53,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   /// 数据初始化
   Future<void> _initData() async {
-    await _initShowData();
     await _initPetDonate();
     await _initPetAdopt();
     mySetState(() {});
-  }
-
-  /// 数据显示初始化
-  Future<void> _initShowData() async {
-    _statisticsResult = await statistics();
   }
 
   /// 宠物帮助众筹初始化
@@ -126,7 +107,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: DefaultTabController(length: 2, child: _buildNestedScrollView()));
+    return DefaultTabController(length: 2, child: _buildNestedScrollView());
   }
 
   Widget _buildNestedScrollView() {
@@ -146,9 +127,9 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           SliverOverlapAbsorber(
             handle: NestedScrollView.sliverOverlapAbsorberHandleFor(context),
             sliver: SliverToBoxAdapter(
-              child: Column(children: [
-                HomeADView(_adList),
-                HomeDataShowView(_statisticsResult),
+              child: Column(children: const [
+                HomeADView(),
+                HomeDataShowView(),
               ]),
             ),
           ),

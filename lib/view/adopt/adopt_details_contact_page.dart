@@ -164,7 +164,7 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
   }
 
   void _onTapQQ() async {
-    final Uri uri = Uri(scheme: 'mqq', path: 'im/chat?chat_type=wpa&uin=${user?.contact?.qq ?? ''}');
+    final Uri uri = Uri.parse('mqqwpa://im/chat?chat_type=wpa&uin=${user?.contact?.qq ?? ''}');
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
@@ -173,7 +173,7 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
   }
 
   void _onTapWechat() async {
-    final Uri uri = Uri(scheme: 'weixin', path: 'dl/addfriend');
+    final Uri uri = Uri.parse("weixin://dl/addfriend");
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {

@@ -37,12 +37,11 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateMixin {
+class _SearchPageState extends State<SearchPage> {
   final TextEditingController _controller = TextEditingController();
   final FocusNode _focusNode = FocusNode();
 
   String _searchText = '';
-  late TabController _tabController;
   FilterResult? filterResult;
   bool _shouldShowData = false;
 
@@ -55,20 +54,6 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
   bool _shouldShowAdopt = false;
   List<PetAdopt> _adoptList = [];
   int _adoptPage = 1;
-
-  @override
-  void initState() {
-    _tabController = TabController(vsync: this, length: 2);
-    // _tabController.addListener(_tabListener);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    // _tabController.removeListener(_tabListener);
-    super.dispose();
-  }
 
   /// 宠物帮助众筹初始化
   Future<void> _initPetDonate() async {
@@ -142,12 +127,15 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
         children: [
           MyShaderMask(1290.w, 1200.h),
           SafeArea(
-            child: Column(
-              children: <Widget>[
-                _buildSearchBox(),
-                _buildTabBar(),
-                Expanded(child: _buildTableBarView()),
-              ],
+            child: DefaultTabController(
+              length: 2,
+              child: Column(
+                children: <Widget>[
+                  _buildSearchBox(),
+                  _buildTabBar(),
+                  Expanded(child: _buildTableBarView()),
+                ],
+              ),
             ),
           ),
         ],
@@ -216,11 +204,10 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
   }
 
   Widget _buildTabBar() {
-    return TabBar(
-      controller: _tabController,
-      labelStyle: const TextStyle(fontWeight: FontWeight.bold),
-      unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
-      tabs: const [Tab(text: '众筹'), Tab(text: '领养')],
+    return const TabBar(
+      labelStyle: TextStyle(fontWeight: FontWeight.bold),
+      unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+      tabs: [Tab(text: '众筹'), Tab(text: '领养')],
     );
   }
 
@@ -228,10 +215,7 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
     if (!_shouldShowData) {
       return Container();
     }
-    return TabBarView(
-      controller: _tabController,
-      children: [_buildTapDonate(), _buildTapAdopt()],
-    );
+    return TabBarView(children: [_buildTapDonate(), _buildTapAdopt()]);
   }
 
   /// 宠物帮助众筹
@@ -313,20 +297,6 @@ class _SearchPageState extends State<SearchPage> with SingleTickerProviderStateM
     _initPetDonate();
     _initPetAdopt();
   }
-
-  // /// 切换监听
-  // void _tabListener() {
-  //   if (!_tabController.indexIsChanging) {
-  //     switch (_tabController.index) {
-  //       case 0:
-  //         _initPetDonate();
-  //         break;
-  //       case 1:
-  //         _initPetAdopt();
-  //         break;
-  //     }
-  //   }
-  // }
 
   // 跳转到众筹详情页面
   void _gotoDonateDetails(PetDonate petDonate) => gotoPetDonateDetails(context, petDonate);

@@ -14,12 +14,8 @@ String _encode(Object? response) => jsonEncode(response);
 parseJson(String text) => compute(_decode, text);
 
 class DioClient extends DioForNative {
-  // 单例模式
-  static DioClient? _instance;
-
-  factory DioClient() => _instance ??= DioClient._init();
-
-  DioClient._init() {
+  // 私有构造函数
+  DioClient._internal() {
     // 请求结果需进行json反序列化
     (transformer as SyncTransformer).jsonDecodeCallback = parseJson;
     options = BaseOptions(
@@ -30,6 +26,12 @@ class DioClient extends DioForNative {
     // 处理头部
     // interceptors.add(OptionInterceptor());
   }
+
+  // 保存单例
+  static final DioClient _singleton = DioClient._internal();
+
+  // 工厂构造函数
+  factory DioClient() => _singleton;
 
   /// 设置Token
   static set token(String? token) {

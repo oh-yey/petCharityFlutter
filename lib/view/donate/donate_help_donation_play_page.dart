@@ -19,6 +19,7 @@ import 'package:pet_charity/routers/application.dart';
 import 'package:pet_charity/routers/routes.dart';
 
 import 'package:pet_charity/tools/extension/extension_num.dart';
+import 'package:pet_charity/tools/disable_screenshots.dart';
 
 import 'package:pet_charity/view/donate/donate_help_donation_play_box.dart';
 import 'package:pet_charity/view/view/button/my_ok_button.dart';
@@ -35,6 +36,27 @@ class DonateHelpDonationPlayPage extends StatefulWidget {
 }
 
 class _DonateHelpDonationPlayPageState extends State<DonateHelpDonationPlayPage> {
+  late DisableScreenshots _plugin;
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO: 禁用屏幕截图
+    _plugin = DisableScreenshots();
+    setDisableScreenshotsStatus(true);
+  }
+
+  @override
+  void dispose() {
+    // TODO: 解除屏幕截图
+    setDisableScreenshotsStatus(false);
+    super.dispose();
+  }
+
+  void setDisableScreenshotsStatus(bool dis) async {
+    await _plugin.disableScreenshots(dis);
+  }
+
   @override
   Widget build(BuildContext context) => MyScaffold(title: '支付', body: _buildMessage());
 
