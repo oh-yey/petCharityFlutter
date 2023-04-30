@@ -327,7 +327,7 @@ class _QuestionAndAnswerPageState extends State<QuestionAndAnswerPage> {
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: const Text('答案删除'),
+            title: const Text('问题删除'),
             content: const Text('删除操作不可恢复'),
             actions: [
               CupertinoButton(

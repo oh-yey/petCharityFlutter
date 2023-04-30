@@ -173,7 +173,7 @@ class _AdoptDetailsContactPageState extends State<AdoptDetailsContactPage> {
   }
 
   void _onTapWechat() async {
-    final Uri uri = Uri.parse("weixin://dl/addfriend");
+    final Uri uri = Uri.parse("weixin://");
     if (await canLaunchUrl(uri)) {
       await launchUrl(uri);
     } else {
