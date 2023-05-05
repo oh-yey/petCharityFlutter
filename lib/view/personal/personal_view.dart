@@ -20,11 +20,15 @@ import 'package:pet_charity/models/pet/pet_list.dart';
 import 'package:pet_charity/service/user_server.dart' as user_server;
 import 'package:pet_charity/service/pet_server.dart' as pet_server;
 
+import 'package:pet_charity/routers/application.dart';
+import 'package:pet_charity/routers/routes.dart';
+
 import 'package:pet_charity/view/adopt/my_adopt_list_page.dart';
 import 'package:pet_charity/view/personal/personal_pet_view.dart';
 import 'package:pet_charity/view/personal/personal_center_page.dart';
 import 'package:pet_charity/view/pet/pet_list_page.dart';
 import 'package:pet_charity/view/personal/feedback_view.dart';
+import 'package:pet_charity/view/utils/dark.dart';
 import 'package:pet_charity/view/utils/svg_picture_color.dart';
 import 'package:pet_charity/view/utils/extension/extension_state.dart';
 import 'package:pet_charity/view/view/my_shader_mask.dart';
@@ -79,17 +83,25 @@ class _PersonalViewState extends State<PersonalView> {
         _buildTop(),
         _buildPersonal(),
         PersonalPetView(_petList, _gotoPetList),
-        _buildBottomInkWell("assets/personal/联系.svg", "联系我们", _concerning),
-        _buildBottomInkWell("assets/personal/分享.svg", "分享给好友", _concerning),
-        _buildBottomInkWell("assets/personal/意见.svg", "意见反馈", () => gotoFeedbackView(context)),
-        _buildBottomInkWell("assets/personal/协议.svg", "用户协议", () => BotToast.showText(text: "暂无")),
-        _buildBottomInkWell("assets/personal/关于.svg", "关于开发者", _concerning),
+        Expanded(
+            child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _buildBottomInkWell("assets/personal/联系.svg", "联系我们", _concerning),
+              _buildBottomInkWell("assets/personal/分享.svg", "分享给好友", _concerning),
+              _buildBottomInkWell("assets/personal/意见.svg", "意见反馈", () => gotoFeedbackView(context)),
+              _buildBottomInkWell("assets/personal/协议.svg", "用户协议", () => BotToast.showText(text: "暂无")),
+              _buildBottomInkWell("assets/personal/关于.svg", "关于开发者", _concerning),
+              _buildBottomInkWell("assets/personal/退出登录.svg", "退出登录", _signOut, titleColor: Colors.redAccent.withOpacity(isDark(context) ? 0.5 : 1)),
+            ],
+          ),
+        ))
       ],
     );
   }
 
-  InkWell _buildBottomInkWell(String icon, String title, GestureTapCallback onTap) {
-    ColorFilter? colorFilter = SvgPictureColor.color(Theme.of(context).textTheme.titleMedium?.color);
+  InkWell _buildBottomInkWell(String icon, String title, GestureTapCallback onTap, {Color? titleColor}) {
+    ColorFilter? colorFilter = SvgPictureColor.color(titleColor ?? Theme.of(context).textTheme.titleMedium?.color);
     return InkWell(
       onTap: onTap,
       child: Ink(
@@ -100,9 +112,9 @@ class _PersonalViewState extends State<PersonalView> {
           children: [
             SvgPicture.asset(icon, height: 72.w, colorFilter: colorFilter),
             SizedBox(width: 32.w),
-            Text(title, style: TextStyle(fontSize: 48.sp, fontWeight: FontWeight.w500)),
+            Text(title, style: TextStyle(fontSize: 48.sp, fontWeight: FontWeight.w500, color: titleColor)),
             const Spacer(),
-            Icon(CupertinoIcons.forward, color: Theme.of(context).textTheme.titleMedium?.color),
+            Icon(CupertinoIcons.forward, color: titleColor ?? Theme.of(context).textTheme.titleMedium?.color),
           ],
         ),
       ),
@@ -308,6 +320,34 @@ class _PersonalViewState extends State<PersonalView> {
     } else {
       debugPrint('launchUrl 错误');
     }
+  }
+
+  void _signOut() async {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('退出登录'),
+          content: const Text('操作不可恢复'),
+          actions: [
+            CupertinoButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text('取消', style: TextStyle(color: Theme.of(context).textTheme.titleMedium?.color)),
+            ),
+            CupertinoButton(
+              onPressed: _exitLogin,
+              child: Text('确认', style: TextStyle(color: CupertinoColors.destructiveRed.withOpacity(isDark(context) ? 0.5 : 1))),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _exitLogin() {
+    Provider.of<UserModel>(context, listen: false).user = null;
+    Navigator.pop(context, 'ok');
+    Application.router.navigateTo(context, Routes.root, clearStack: true);
   }
 
   void _gotoPersonalCenter() async {
